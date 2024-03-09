@@ -1,20 +1,38 @@
 import { StatusBar } from 'expo-status-bar';
+import { useState } from 'react';
 import { StyleSheet, Text, View, Image, Pressable, TextInput } from 'react-native';
 
 export default function App() {
+
+  const [input, setInput] = useState('');
+  const [goal, setGoal] = useState([]);
+
+  function handleInput(e) {
+    setInput(e)
+
+  }
+  function handleGoals() {
+    setGoal(newGoals => [...newGoals, input]);
+  }
+
+
   return (<>
     <View style={styles.mainWrap}>
       <View style={styles.innerWrap}>
         <Text>Whats Next ?</Text>
         <StatusBar style="auto" />
         <TextInput
+          onChange={handleInput}
           style={styles.textinput}
           placeholder='your input goal' />
-        <Pressable style={styles.button}>
+        <Pressable
+          style={styles.button}>
           <Text>GO!</Text>
         </Pressable>
       </View>
-      <View style={styles.goalWrap}></View>
+      <View style={styles.goalWrap}>
+        {goal && goal.map((elem, index) => <Text key={index}>{elem}</Text>)}
+      </View>
     </View>
   </>);
 }
