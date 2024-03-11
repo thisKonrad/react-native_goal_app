@@ -1,18 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { StyleSheet, Text, View, Image, Pressable, TextInput } from 'react-native';
+import { useUID } from 'react-uid';
+import { StyleSheet, Text, View, Pressable, TextInput } from 'react-native';
 
 export default function App() {
 
   const [input, setInput] = useState('');
   const [goal, setGoal] = useState([]);
+  const uid = useUID();
 
   function handleInput(e) {
     setInput(e)
 
   }
   function handleGoals() {
-    setGoal(newGoals => [...newGoals, input]);
+    setGoal(currentGoal => [...currentGoal, input]);
   }
 
 
@@ -26,12 +28,13 @@ export default function App() {
           style={styles.textinput}
           placeholder='your input goal' />
         <Pressable
+          onPress={handleGoals}
           style={styles.button}>
           <Text>GO!</Text>
         </Pressable>
       </View>
       <View style={styles.goalWrap}>
-        {goal && goal.map((elem, index) => <Text key={index}>{elem}</Text>)}
+        {goal.map((elem) => <Text key={uid}>{elem}</Text>)}
       </View>
     </View>
   </>);
