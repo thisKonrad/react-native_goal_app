@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, Pressable, TextInput } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Pressable, TextInput, FlatList } from 'react-native';
 
 export default function App() {
 
@@ -11,8 +11,8 @@ export default function App() {
     setInput(e)
   }
   function handleGoals() {
-    setGoals((currentGoals) => [...currentGoals, input,]);
-    setInput('')
+    setGoals((currentGoals) => [...currentGoals,
+    { text: input, id: Math.random().toString() }]);
   }
 
 
@@ -32,11 +32,19 @@ export default function App() {
         </Pressable>
       </View>
       <View style={styles.goalWrap}>
-        <ScrollView >
-          <View >
-            {goal.map((text, index) => <View key={index}><Text>{text}</Text></View>)}
-          </View>
-        </ScrollView>
+        {/*   <ScrollView alwaysBounceVertical={false}>
+          {goal.map((text, index) => <View key={index} style={styles.goals}><Text>{text}</Text></View>)}
+        </ScrollView> */}
+        <FlatList
+          data={goal}
+          renderItem={(itemData) => {
+            return <View
+              style={styles.goals}>
+              <Text>{itemData.item.text}</Text></View>
+          }
+          }
+          keyExtractor={(item) => { return item.id }}
+          alwaysBounceVertical={false} />
       </View>
     </View>
   </>);
@@ -58,11 +66,23 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   goalWrap: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
     flex: 4,
+  },
+  goals: {
+    margin: 10,
+    padding: 5,
+    backgroundColor: 'violet',
+    fontColor: 'white',
+    width: 332,
   },
   button: {
     margin: 10,
     padding: 10,
+    width: 56,
     borderRadius: 50,
     backgroundColor: 'violet',
   },
